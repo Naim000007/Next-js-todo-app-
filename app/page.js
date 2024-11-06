@@ -1,7 +1,8 @@
 "use client"
 import Todo from "@/Components/Todo";
+import axios from "axios";
 import Image from "next/image";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ToastContainer, toast } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 export default function Home() {
@@ -18,13 +19,27 @@ export default function Home() {
   const onSubmitHandel = async (e) => {
     e.preventDefault();
     try {
-      toast.success("Success")
+      const response = await axios.post('/api', formData);
+      toast.success(response.data.msg)
+      setformData({ title: "", description: "" });
     }
     catch (e) {
       toast.error("Error")
 
     }
   }
+  const [todoData, setTodoData] = useState([])
+  const fetchTodos = async (e) => {
+    try {
+      const response = await axios.get('/api');
+      setTodoData(response.data);
+    } catch (e) {
+      toast.error("Error")
+    }
+  }
+  useEffect(() => {
+    fetchTodos()
+  }, [])
   return (
     <>
       <ToastContainer theme="dark " />
@@ -57,9 +72,11 @@ export default function Home() {
             </tr>
           </thead>
           <tbody>
-            <Todo />
-            <Todo />
-            <Todo />
+            {
+              todoData.map((item, index) => {
+                return <Todo key={index} title={item.title} description={item.description} complete={item.isCompleted} mongoId={item._id} id={index} />
+              })
+            }
           </tbody>
         </table>
       </div>
