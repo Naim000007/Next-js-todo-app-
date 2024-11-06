@@ -10,6 +10,18 @@ export default function Home() {
     title: "",
     description: "",
   })
+  const [todoData, setTodoData] = useState([])
+  const fetchTodos = async (e) => {
+    try {
+      const response = await axios('/api');
+      setTodoData(response.data.todos);
+    } catch (e) {
+      toast.error("Error")
+    }
+  }
+  useEffect(() => {
+    fetchTodos()
+  }, [])
   const onChangeHandler = (e) => {
     const name = e.target.name
     const value = e.target.value
@@ -28,18 +40,7 @@ export default function Home() {
 
     }
   }
-  const [todoData, setTodoData] = useState([])
-  const fetchTodos = async (e) => {
-    try {
-      const response = await axios.get('/api');
-      setTodoData(response.data);
-    } catch (e) {
-      toast.error("Error")
-    }
-  }
-  useEffect(() => {
-    fetchTodos()
-  }, [])
+
   return (
     <>
       <ToastContainer theme="dark " />
