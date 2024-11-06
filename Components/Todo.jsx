@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 
-const Todo = ({ id, title, description, mongoId, complete, onDelete, onComplete, deleteTodo }) => {
+const Todo = ({ id, title, description, mongoId, complete, onDelete, completeTodo, deleteTodo }) => {
 
     return (
         <tr className="bg-white border-b dark:bg-gray-800 dark:border-gray-700">
@@ -19,7 +19,7 @@ const Todo = ({ id, title, description, mongoId, complete, onDelete, onComplete,
                     Delete
                 </button>
                 <button
-                    onClick={() => onComplete(mongoId)}
+                    onClick={() => completeTodo(mongoId)}
                     className='py-2 px-4 bg-green-500 text-white'
                 >
                     Done
